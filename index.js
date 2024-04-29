@@ -32,7 +32,11 @@ function start(client) {
     client.onAnyMessage(async message => {
         console.log(message);
 
-        if (((allowedGroups.indexOf(message.chatId) !== -1) || message.isGroupMsg === false) && message.mimetype && message.mimetype.includes("audio")) {
+        // use the line below to transcribe every audio file (voice clips and audio messages)
+        //if (((allowedGroups.indexOf(message.chatId) !== -1) || message.isGroupMsg === false) && message.mimetype && message.mimetype.includes("audio")) {
+        
+        // use the line below to transcribe only voice clips
+        if (((allowedGroups.indexOf(message.chatId) !== -1) || message.isGroupMsg === false) && message.type && message.type.includes("ptt")) {    
             const filename = `${path_mp3}/${message.t}.${mime.extension(message.mimetype)}`;
             const mediaData = await wa.decryptMedia(message);
 
