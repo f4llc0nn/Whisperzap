@@ -24,7 +24,7 @@ docker build . -t whats
 ```yaml
 version: "3.5"
 services:
-  speech2text2:
+  speech2text:
     image: whats
     restart: always
     environment:
