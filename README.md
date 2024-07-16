@@ -2,7 +2,7 @@
 
 ## How Does It Work?
 
-Every audio or voice clip received will be stored. Whenever you quote one of those messages and type `!ler`, that message will be forwarded to OpenAI to be transcribed. The transcribed text will then be sent as a message in the same chat screen.
+Every audio or voice clip sent or received will be stored. Whenever you quote one of those messages and type `!ler`, that message will be forwarded to OpenAI to be transcribed. The transcribed text will then be sent as a message in the same chat screen.
 
 ## Build the Image
 
