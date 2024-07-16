@@ -12,6 +12,7 @@ const path_mp3 = process.env.PATH_MP3 ? process.env.PATH_MP3 : '.' ;
 const sessionDataPath = process.env.PATH_SESSION ? process.env.PATH_SESSION : './' ;
 const groups = process.env.GROUPS ? process.env.GROUPS : 'xxxx,yyyy' ;
 const allowedGroups = groups.split(',');
+const user_phone = process.env.USER_PHONE ? process.env.USER_PHONE +'@c.us' : 'NA' ;
 
 wa.create({
     useChrome: true,
@@ -32,7 +33,8 @@ function start(client) {
     client.onAnyMessage(async message => {
         console.log(message);
 
-        if ((allowedGroups.includes(message.chatId) || !message.isGroupMsg) && message.type === "ptt") {
+        // Save voice messages
+        if (message.type === "ptt" || message.type === "audio") {
             const filename = `${path_mp3}/${message.id}.${mime.extension(message.mimetype)}`;
             const mediaData = await wa.decryptMedia(message);
 
@@ -42,7 +44,8 @@ function start(client) {
             });
         }
 
-        if (message.body === "!ler" && message.quotedMsg && message.quotedMsg.type === "ptt") {
+        // Check for "!ler" reply and transcribe
+        if ((`${user_phone}` === "NA" || message.from === `${user_phone}`) && message.body === "!ler" && message.quotedMsg && (message.quotedMsg.type === "ptt" || message.quotedMsg === "audio")) {
             const originalMessageId = message.quotedMsg.id;
             const filePath = `${path_mp3}/${originalMessageId}.${mime.extension(message.quotedMsg.mimetype)}`;
 
