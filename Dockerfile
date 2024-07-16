@@ -1,4 +1,4 @@
-FROM  openwa/wa-automate
+FROM docker.io/openwa/wa-automate
 USER root
 WORKDIR /app
 COPY . /app/
