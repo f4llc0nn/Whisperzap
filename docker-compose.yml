@@ -7,7 +7,7 @@ services:
        - OPENAI_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
        - PATH_MP3=/mp3
        - PATH_SESSION=/session
-       - USER_PHONE=9999999999999
+       - USER_PHONE=5511999988888
     volumes:
        - session:/session
        - mp3:/mp3
