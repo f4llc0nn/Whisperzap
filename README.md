@@ -6,7 +6,7 @@ Every audio or voice clip sent or received will be stored. Whenever you quote on
 
 ## Build the Image
 
-To build the Docker image, run the following command:
+To build the image, run the following command:
 
 ```sh
 podman build . -t whats
@@ -25,11 +25,10 @@ podman run --name=whats -d --restart always \
 localhost/whats:latest
 ```
 
-After the container are up and running, view the logs with:
+After the container is up and running, view the logs with:
 
 ```sh
 podman logs -f --tail 100 whats
 ```
-Replace whats with the name you chose for your container if it is different (and localhost/whats as well).
 
 Finally, scan the QR code using your phone to complete the setup.
