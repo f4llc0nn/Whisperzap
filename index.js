@@ -45,7 +45,7 @@ function start(client) {
         }
 
         // Check for "!ler" reply and transcribe
-        if ((`${user_phone}` === "NA" || message.from === `${user_phone}`) && message.body === "!ler" && message.quotedMsg && (message.quotedMsg.type === "ptt" || message.quotedMsg === "audio")) {
+        if ((`${user_phone}` === "NA" || message.from === `${user_phone}`) && message.body === "!ler" && message.quotedMsg && (message.quotedMsg.type === "ptt" || message.quotedMsg.type === "audio")) {
             const originalMessageId = message.quotedMsg.id;
             const filePath = `${path_mp3}/${originalMessageId}.${mime.extension(message.quotedMsg.mimetype)}`;
 
