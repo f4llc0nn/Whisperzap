@@ -1,51 +1,35 @@
-Update .env with your OpenAI API key and make sure you are using NodeJS >= 16.
+# WhatsAudio
 
-You can find more information about OpenAI here: https://platform.openai.com/overview
+## How Does It Work?
 
-You need ffmpeg installed to convert audio files: https://ffmpeg.org
+Every audio or voice clip received will be stored. Whenever you quote one of those messages and type `!ler`, that message will be forwarded to OpenAI to be transcribed. The transcribed text will then be sent as a message in the same chat screen.
 
-`npm install`
+## Build the Image
 
-`node index.js`
+To build the Docker image, run the following command:
 
-The console will show the QR code that you need to read using WhatsApp's option to link a device.
-When you link your device, you need to wait for the application to sync with WhatsApp. This may take a while.
-It will be ready when you see this message in the console:
-
-🚀 @OPEN-WA ready for account: XXXX
-
-Enjoy.
-
-# Docker
-```shell
-docker build . -t whats
+```sh
+docker build . -t whats3
 ```
-# Docker Compose
-```yaml
-version: "3.5"
-services:
-  speech2text:
-    image: whats
-    restart: always
-    environment:
-       - OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxx
-       - GROUPS=aaaaaaaa-bbbbbbb@g.us,yyyyyyyyy-xxxxxxxx@g.us
-       - PATH_MP3=/mp3
-       - PATH_SESSION=/session
-    volumes:
-       - session:/session
-       - mp3:/mp3
-volumes:
-  session:
-    driver: local
-    driver_opts:
-      type: none
-      device: /full/path/to/WhatsAppTranscription/session
-      o: bind
-  mp3:
-    driver: local
-    driver_opts:
-      type: none
-      device: /full/path/to//WhatsAppTranscription/mp3
-      o: bind
+
+## Configure Your docker-compose.yml File
+1. Fill in the OPENAI_API_KEY variable with your OpenAI API key.
+2. Add your phone number to the USER_PHONE variable, including the country code. Brazilian users might need to avoid the leading 9 if the account is old enough.
+3. Make sure you have a paid account registered with the OpenAI API. You can sign up [here](https://platform.openai.com/settings/organization/billing/overview).
+4. Edit the paths in the device: lines as necessary.
+5. Ensure the required directories are created.
+
+## Run it
+
+```sh
+docker-compose up -d
 ```
+
+After the container are up and running, view the logs with:
+
+```sh
+docker logs -f --tail 100 whatsaudio_lerAudio_1
+```
+Replace whatsaudio_lerAudio_1 with the name you chose for your container if it is different.
+
+Finally, scan the QR code using your phone to complete the setup.
