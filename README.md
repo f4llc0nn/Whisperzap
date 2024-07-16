@@ -9,20 +9,20 @@ Every audio or voice clip sent or received will be stored. Whenever you quote on
 To build the Docker image, run the following command:
 
 ```sh
-docker build . -t whats3
+podman build . -t whats
 ```
 
-## Configure Your docker-compose.yml File
-1. Fill in the OPENAI_API_KEY variable with your OpenAI API key.
-2. Add your phone number to the USER_PHONE variable, including the country code. Brazilian users might need to avoid the leading 9 if the account is old enough.
-3. Make sure you have a paid account registered with the OpenAI API. You can sign up [here](https://platform.openai.com/settings/organization/billing/overview).
-4. Edit the paths in the device: lines as necessary.
-5. Ensure the required directories are created.
-
-## Run it
+## Run it (change the variables as needed)
 
 ```sh
-docker-compose up -d
+podman run --name=whats -d --restart always \
+--volume=/data/whats/session:/session \
+--volume=/data/whats/mp3:/mp3 \
+-e OPENAI_API_KEY=sk-proj-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy \
+-e USER_PHONE=5511999998888 \
+-e PATH_MP3=/mp3 \
+-e PATH_SESSION=/session \
+localhost/whats:latest
 ```
 
 After the container are up and running, view the logs with:
@@ -30,6 +30,6 @@ After the container are up and running, view the logs with:
 ```sh
 docker logs -f --tail 100 whatsaudio_lerAudio_1
 ```
-Replace whatsaudio_lerAudio_1 with the name you chose for your container if it is different.
+Replace whats with the name you chose for your container if it is different (and localhost/whats as well).
 
 Finally, scan the QR code using your phone to complete the setup.
