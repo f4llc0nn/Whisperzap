@@ -28,7 +28,7 @@ localhost/whats:latest
 After the container are up and running, view the logs with:
 
 ```sh
-docker logs -f --tail 100 whatsaudio_lerAudio_1
+podman logs -f --tail 100 whats
 ```
 Replace whats with the name you chose for your container if it is different (and localhost/whats as well).
 
