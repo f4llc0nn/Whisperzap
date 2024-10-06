@@ -3,7 +3,7 @@
 ## How Does It Work?
 
 Every audio or voice clip sent or received will be stored. 
-Whenever you quote one of those messages and type `!w`, that message will be forwarded to OpenAI to be transcribed. 
+If you quote one of these messages and reply `!w`, the message will be forwarded to OpenAI to be transcribed. 
 The transcribed text will then be sent as a message in the same chat screen.
 
 ## Requirements
