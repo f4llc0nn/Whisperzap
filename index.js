@@ -17,23 +17,29 @@ const user_phone = process.env.USER_PHONE ? process.env.USER_PHONE +'@c.us' : 'N
 wa.create({
     useChrome: true,
     sessionId: "WhatsAppTranscription",
-    multiDevice: true, //required to enable multiDevice support
-    authTimeout: 60, //wait only 60 seconds to get a connection with the host account device
+    multiDevice: true,
+    authTimeout: 60,
     blockCrashLogs: true,
     disableSpins: true,
     headless: true,
     hostNotificationLang: 'PT_BR',
     logConsole: true,
     popup: true,
-    qrTimeout: 0, //0 means it will wait forever for you to scan the qr code
+    qrTimeout: 0,
     sessionDataPath,
 }).then(client => start(client));
 
 function start(client) {
     client.onAnyMessage(async message => {
-        console.log(message);
+        const sender = message.sender?.pushname || message.sender?.verifiedName || message.sender?.shortName || 'Unknown_Sender';
+        const isGroupMessage = message.isGroupMsg;
+        const groupId = message.chatId;
+        const fromUserId = message.sender?.id || 'Unknown_ID';
 
-        // Save voice messages
+	//console.log(`Debug: ${JSON.stringify(message, null, 2)}`);
+        const msg = (isGroupMessage) ? `${sender} (${fromUserId}) @ ${message.chat.groupMetadata.subject} : ${message.body}` : `${sender} (${fromUserId}) : ${message.body}`;
+	console.log(msg);
+
         if (message.type === "ptt" || message.type === "audio") {
             const filename = `${path_mp3}/${message.id}.${mime.extension(message.mimetype)}`;
             const mediaData = await wa.decryptMedia(message);
@@ -44,12 +50,16 @@ function start(client) {
             });
         }
 
-        // Check for "!ler" reply and transcribe
-        if ((`${user_phone}` === "NA" || message.from === `${user_phone}`) && message.body === "!ler" && message.quotedMsg && (message.quotedMsg.type === "ptt" || message.quotedMsg.type === "audio")) {
+        if ((`${user_phone}` === "NA" || message.from === `${user_phone}`) &&
+		message.body === "!w" &&
+		message.quotedMsg &&
+		(message.quotedMsg.type === "ptt" || message.quotedMsg.type === "audio")) {
+	    console.log(`'!w' command triggered by ${sender}`);
             const originalMessageId = message.quotedMsg.id;
             const filePath = `${path_mp3}/${originalMessageId}.${mime.extension(message.quotedMsg.mimetype)}`;
 
             if (fs.existsSync(filePath)) {
+                console.log(`Transcribing file: ${filePath}`);
                 const resp = await openai.createTranscription(fs.createReadStream(filePath), "whisper-1");
                 console.log(`Transcribed text: ${resp.data.text}`);
                 await client.reply(message.chatId, `🗣️ ${resp.data.text}`, message.id);
