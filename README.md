@@ -1,34 +1,29 @@
-# WhatsAudio
+# Whisperzap
 
 ## How Does It Work?
 
-Every audio or voice clip sent or received will be stored. Whenever you quote one of those messages and type `!ler`, that message will be forwarded to OpenAI to be transcribed. The transcribed text will then be sent as a message in the same chat screen.
+Every audio or voice clip sent or received will be stored. Whenever you quote one of those messages and type `!w`, that message will be forwarded to OpenAI to be transcribed. The transcribed text will then be sent as a message in the same chat screen.
+
+## Requirements
+1. Docker
+2. OpenAI API. You can sign up [here](https://platform.openai.com/settings/organization/billing/overview)
 
 ## Build the Image
 
-To build the image, run the following command:
-
 ```sh
-podman build . -t whats
+docker build . -t whisperzap
 ```
 
-## Run it (change the variables as needed)
+## Edit docker-compose.yml and run:
 
 ```sh
-podman run --name=whats -d --restart always \
---volume=/data/whats/session:/session \
---volume=/data/whats/mp3:/mp3 \
--e OPENAI_API_KEY=sk-proj-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy \
--e USER_PHONE=5511999998888 \
--e PATH_MP3=/mp3 \
--e PATH_SESSION=/session \
-localhost/whats:latest
+docker compose up -d
 ```
 
-After the container is up and running, view the logs with:
+After the container is up and running, view the logs:
 
 ```sh
-podman logs -f --tail 100 whats
+docker logs -f --tail 100 whisperzap
 ```
 
 Finally, scan the QR code using your phone to complete the setup.
