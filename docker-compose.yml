@@ -1,0 +1,27 @@
+version: "3.5"
+services:
+  lerAudio:
+    image: whisperzap
+    container_name: whisperzap
+    restart: always
+    environment:
+       - USER_PHONE=5511999988888
+       - OPENAI_API_KEY=sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+       - PATH_MP3=/mp3
+       - PATH_SESSION=/session
+    volumes:
+       - session:/session
+       - mp3:/mp3
+volumes:
+  session:
+    driver: local
+    driver_opts:
+      type: none
+      device: /full/path/to/whisperzap/session
+      o: bind
+  mp3:
+    driver: local
+    driver_opts:
+      type: none
+      device: /full/path/to/whisperzap/mp3
+      o: bind
